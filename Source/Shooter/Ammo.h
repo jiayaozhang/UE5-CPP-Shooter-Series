@@ -14,48 +14,46 @@ UCLASS()
 class SHOOTER_API AAmmo : public AItem
 {
 	GENERATED_BODY()
+	
 public:
 	AAmmo();
 
 	virtual void Tick(float DeltaTime) override;
 
-protected:
+    virtual void EnableCustomDepth() override;
 
+    virtual void DisableCustomDepth() override;
+
+protected:
 	virtual void BeginPlay() override;
 
-	/** Override of SetItemProperties so we can set AmmoMesh properties */
 	virtual void SetItemProperties(EItemState State) override;
 
-	UFUNCTION()
-	void AmmoSphereOverlap(
-		UPrimitiveComponent* OverlappedComponent,
-		AActor* OtherActor,
-		UPrimitiveComponent* OtherComp,
-		int32 OtherBodyIndex,
+UFUNCTION()
+	void OnAmmoSphereOverlap(
+		UPrimitiveComponent* OverlappedComponent, 
+		AActor* OtherActor, 
+		UPrimitiveComponent* OtherComponent, 
+		int32 OtherBodyIndex, 
 		bool bFromSweep,
 		const FHitResult& SweepResult);
 
 private:
-	/** Mesh for the ammo pickup */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Ammo, meta = (AllowPrivateAccess = "true"))
-	UStaticMeshComponent* AmmoMesh;
+	UStaticMeshComponent* AmmoMesh{ nullptr };
 
-	/** Ammo type for the ammo */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ammo, meta = (AllowPrivateAccess = "true"))
 	EAmmoType AmmoType;
 
-	/** The texture for the Ammo icon */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Ammo, meta = (AllowPrivateAccess = "true"))
-	UTexture2D* AmmoIconTexture;
+	UTexture2D* AmmoIconTexture{ nullptr };
 
-	/** Overlap sphere for picking up the Ammo */
+	/** Overlap sphere for automatically-picking up ammo */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Ammo, meta = (AllowPrivateAccess = "true"))
-	class USphereComponent* AmmoCollisionSphere;
+	class USphereComponent* AmmoCollisionSphere{ nullptr };
 
 public:
 	FORCEINLINE UStaticMeshComponent* GetAmmoMesh() const { return AmmoMesh; }
-	FORCEINLINE EAmmoType GetAmmoType() const { return AmmoType; }
 
-	virtual void EnableCustomDepth() override;
-	virtual void DisableCustomDepth() override;
+	FORCEINLINE EAmmoType GetAmmoType() const { return AmmoType; }
 };

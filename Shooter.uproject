@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "4.27",
+	"EngineAssociation": "5.0",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -9,22 +9,21 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine",
-				"AIModule"
+				"Engine"
 			]
 		}
 	],
 	"Plugins": [
 		{
-			"Name": "NiagaraExtras",
+			"Name": "ModelingToolsEditorMode",
+			"Enabled": true,
+			"TargetAllowList": [
+				"Editor"
+			]
+		},
+		{
+			"Name": "MetaHuman",
 			"Enabled": true
 		}
-	],
-	"TargetPlatforms": [
-		"Android",
-		"IOS",
-		"Linux",
-		"Mac",
-		"Windows"
 	]
 }

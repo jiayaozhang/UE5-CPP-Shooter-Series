@@ -13,19 +13,19 @@ UCLASS()
 class SHOOTER_API AShooterPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
 public:
 	AShooterPlayerController();
 
 protected:
-
 	virtual void BeginPlay() override;
 
 private:
-	/** Reference to the Overall HUD Overlay Blueprint Class */
+	/** Reference to the overall HUD Overlay Blueprint class */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widgets, meta = (AllowPrivateAccess = "true"))
 	TSubclassOf<class UUserWidget> HUDOverlayClass;
-	
-	/** Variable to hold the HUD Overlay Widget after creating it */
+
+	/** HUD Overlay Widget */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Widgets, meta = (AllowPrivateAccess = "true"))
-	UUserWidget* HUDOverlay;
+	UUserWidget* HUDOverlay{nullptr};
 };

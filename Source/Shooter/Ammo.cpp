@@ -9,85 +9,90 @@
 
 AAmmo::AAmmo()
 {
-	// Construct the AmmoMesh component and set it as the root
-	AmmoMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("AmmoMesh"));
-	SetRootComponent(AmmoMesh);
+    AmmoMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("AmmoMesh"));
+    SetRootComponent(AmmoMesh);
 
-	GetCollisionBox()->SetupAttachment(GetRootComponent());
-	GetPickupWidget()->SetupAttachment(GetRootComponent());
-	GetAreaSphere()->SetupAttachment(GetRootComponent());
+    GetCollisionBox()->SetupAttachment(GetRootComponent());
+    GetPickupWidget()->SetupAttachment(GetRootComponent());
+    GetAreaSphere()->SetupAttachment(GetRootComponent());
 
-	AmmoCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AmmoCollisionSphere"));
-	AmmoCollisionSphere->SetupAttachment(GetRootComponent());
-	AmmoCollisionSphere->SetSphereRadius(50.f);
-}
-
-void AAmmo::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+    AmmoCollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("AmmoCollisionSphere"));
+    AmmoCollisionSphere->SetupAttachment(GetRootComponent());
+    AmmoCollisionSphere->SetSphereRadius(50.f);
 
 }
 
 void AAmmo::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
-	AmmoCollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AAmmo::AmmoSphereOverlap);
+    AmmoCollisionSphere->OnComponentBeginOverlap.AddDynamic(this, &AAmmo::OnAmmoSphereOverlap);
+}
+
+void AAmmo::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
 }
 
 void AAmmo::SetItemProperties(EItemState State)
 {
-	Super::SetItemProperties(State);
-	switch (State)
+    Super::SetItemProperties(State);
+
+    switch (State)
 	{
-	case EItemState::EIS_Pickup:
-		// Set mesh properties
-		AmmoMesh->SetSimulatePhysics(false);
-		AmmoMesh->SetEnableGravity(false);
-		AmmoMesh->SetVisibility(true);
-		AmmoMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-		AmmoMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		break;
-	case EItemState::EIS_Equipped:
-		// Set mesh properties
-		AmmoMesh->SetSimulatePhysics(false);
-		AmmoMesh->SetEnableGravity(false);
-		AmmoMesh->SetVisibility(true);
-		AmmoMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-		AmmoMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		break;
-	case EItemState::EIS_Falling:
-		// Set mesh properties
-		AmmoMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-		AmmoMesh->SetSimulatePhysics(true);
-		AmmoMesh->SetEnableGravity(true);
-		AmmoMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-		AmmoMesh->SetCollisionResponseToChannel(
-			ECollisionChannel::ECC_WorldStatic,
-			ECollisionResponse::ECR_Block);
-		break;
-	case EItemState::EIS_EquipInterping:
-		// Set mesh properties
-		AmmoMesh->SetSimulatePhysics(false);
-		AmmoMesh->SetEnableGravity(false);
-		AmmoMesh->SetVisibility(true);
-		AmmoMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-		AmmoMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		break;
+		case EItemState::EIS_Pickup:
+			AmmoMesh->SetSimulatePhysics(false);
+			AmmoMesh->SetVisibility(true);
+			AmmoMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+			AmmoMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			AmmoMesh->SetEnableGravity(false);
+			break;
+
+		case EItemState::EIS_Equipped:
+			AmmoMesh->SetSimulatePhysics(false);
+			AmmoMesh->SetVisibility(true);
+			AmmoMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+			AmmoMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			AmmoMesh->SetEnableGravity(false);
+			break;
+
+		case EItemState::EIS_Falling:
+			AmmoMesh->SetSimulatePhysics(true);
+			AmmoMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+			AmmoMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+			AmmoMesh->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldStatic, ECollisionResponse::ECR_Block);
+			AmmoMesh->SetEnableGravity(true);
+			break;
+
+		case EItemState::EIS_EquipInterpolating:
+			AmmoMesh->SetSimulatePhysics(false);
+			AmmoMesh->SetVisibility(true);
+			AmmoMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+			AmmoMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			AmmoMesh->SetEnableGravity(false);
+			break;
 	}
 }
 
-void AAmmo::AmmoSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AAmmo::OnAmmoSphereOverlap(
+    UPrimitiveComponent* OverlappedComponent, 
+    AActor* OtherActor, 
+    UPrimitiveComponent* OtherComponent, 
+    int32 OtherBodyIndex, 
+    bool bFromSweep,
+    const FHitResult& SweepResult)
 {
-	if (OtherActor)
-	{
-		auto OverlappedCharacter = Cast<AShooterCharacter>(OtherActor);
-		if (OverlappedCharacter)
-		{
-			StartItemCurve(OverlappedCharacter);
-			AmmoCollisionSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		}
-	}
+    if (!OtherActor)
+    {
+        return;
+    }
+     
+    auto OverlappedCharacter = Cast<AShooterCharacter>(OtherActor);
+    if (OverlappedCharacter)
+    {
+        StartItemCurve(OverlappedCharacter);
+        AmmoCollisionSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    }
 }
 
 void AAmmo::EnableCustomDepth()
