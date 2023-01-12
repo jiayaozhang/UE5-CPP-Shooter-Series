@@ -50,7 +50,7 @@ https://drive.google.com/drive/folders/1OCpLWrXeA1bNWBOeqlY4Tt__50YMFSXt?usp=sha
 9. Shooting Animation
 10. Blending Shooting Animation
 
-![image](https://user-images.githubusercontent.com/38579506/211154100-ddc8f9e4-16c8-43f5-968b-928165179228.png)
+![image](https://user-images.githubusercontent.com/38579506/212109638-cb5519b5-5d5e-4be4-8b9c-df17f4ed7bd6.png)
 
 
 # 狙击
@@ -82,7 +82,7 @@ https://drive.google.com/drive/folders/1OCpLWrXeA1bNWBOeqlY4Tt__50YMFSXt?usp=sha
 8. Refactor trace under crosshairs
 9. Widget trace when close
 
-![image](https://user-images.githubusercontent.com/38579506/211154259-3954e5a2-e574-4c37-ace9-7c84413e03b6.png)
+![image](https://user-images.githubusercontent.com/38579506/212109987-14a53744-d0d4-426b-83c3-afcc378926e4.png)
 
 
 # 插值
@@ -96,6 +96,9 @@ https://drive.google.com/drive/folders/1OCpLWrXeA1bNWBOeqlY4Tt__50YMFSXt?usp=sha
 7. Following the Z curve
 8. Interp item X and Y
 9. Interp Rotation
+
+![image](https://user-images.githubusercontent.com/38579506/212110392-d4c19aae-9d82-4b4e-8592-0621f35deaa1.png)
+
 
 # AI and Behavior Trees
 
