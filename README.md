@@ -49,18 +49,6 @@ https://drive.google.com/drive/folders/1OCpLWrXeA1bNWBOeqlY4Tt__50YMFSXt?usp=sha
 8. Shooting Particles
 9. Shooting Animation
 10. Blending Shooting Animation
-11. Line Tracing for Bullet Hits
-12. Impact particles
-13. Beam Particles
-14. Socket Offset
-15. HUD Class and Crosshairs
-16. Directing Rifle shots
-17. Trace from Gun Barrel
-18. Refractor Beam End Code
-19. Movement Offset Yaw
-20. Strafing Blendspace
-21. Jog start and stop blendspacer
-22. Smooth character movement
 
 ![image](https://user-images.githubusercontent.com/38579506/211154100-ddc8f9e4-16c8-43f5-968b-928165179228.png)
 
@@ -108,3 +96,24 @@ https://drive.google.com/drive/folders/1OCpLWrXeA1bNWBOeqlY4Tt__50YMFSXt?usp=sha
 7. Following the Z curve
 8. Interp item X and Y
 9. Interp Rotation
+
+# AI and Behavior Trees
+
+1. Adding AI Modules
+2. Creating a Blackboard and Behavior Tree
+3. Patrol Point
+4. Enemy Run Animation
+5. Second Patrol Point
+6. Agro Sphere
+7. Stun Enemy
+8. Retargeting New Montages
+9. Different Grus Enemies
+
+# Level Creation and Finishing the Game!
+
+1. Level Prototyping Tools
+2. Ruins Assets Levels
+3. Sphere Reflection Capture
+4. Post Process Effects
+5. Finishing the Game!
+
